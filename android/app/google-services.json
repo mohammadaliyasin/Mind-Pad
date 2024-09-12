@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "846872666518",
+    "project_id": "mindpad-55ac1",
+    "storage_bucket": "mindpad-55ac1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:846872666518:android:d247a5dcc19c0eaf677db7",
+        "android_client_info": {
+          "package_name": "com.mindpad.mind_pad"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8KWytufBwFSCBoCdNl58OLDzhu5LOVWE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

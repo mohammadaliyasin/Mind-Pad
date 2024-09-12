@@ -17,12 +17,7 @@ class ProfileView extends GetView<ProfileController> {
             icon: const Icon(Icons.logout),
             onPressed: () async {
               await controller.signOut();
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SignUpView(), // Ensure you have this view
-                ),
-              );
+              Get.off(() => const SignUpView());
             },
           ),
         ],
@@ -53,12 +48,7 @@ class ProfileView extends GetView<ProfileController> {
               ElevatedButton(
                 onPressed: () async {
                   await controller.signOut();
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SignUpView(), // Ensure you have this view
-                    ),
-                  );
+                  Get.off(() => const SignUpView());
                 },
                 child: const Text('Sign Out'),
               ),
