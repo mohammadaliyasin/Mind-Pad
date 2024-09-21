@@ -4,7 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class ProfileController extends GetxController {
   //TODO: Implement ProfileController
-    final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   var user = Rx<User?>(null);

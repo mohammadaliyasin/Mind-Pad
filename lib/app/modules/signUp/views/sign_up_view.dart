@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mind_pad/app/modules/home/views/home_view.dart';
 import 'package:mind_pad/app/modules/profile/views/profile_view.dart';
 import '../controllers/sign_up_controller.dart';
-
 
 class SignUpView extends GetView<SignUpController> {
   const SignUpView({super.key});
@@ -15,79 +16,81 @@ class SignUpView extends GetView<SignUpController> {
       width: MediaQuery.sizeOf(context).width,
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('assets/images/bg.png'), // Ensure the correct image path
+          image: AssetImage('assets/images/bg.png'),
           fit: BoxFit.fill,
         ),
       ),
       child: Scaffold(
-        backgroundColor: Colors.transparent, // Keep the background transparent
+        backgroundColor: Colors.transparent,
         body: Stack(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 150, vertical: 50),
+              padding: EdgeInsets.symmetric(horizontal: 150.w, vertical: 50.h),
               child: Image.asset('assets/images/mindpad.png'),
             ),
             Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 85),
+                  SizedBox(height: 80.h),
                   RichText(
                     textAlign: TextAlign.start,
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: '“ ',
+                          text: '“',
                           style: GoogleFonts.outfit(
                             color: const Color(0xFF4361EE),
-                            fontSize: 70,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 70.sp,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                         TextSpan(
                           text: 'Your ',
                           style: GoogleFonts.outfit(
                             color: Colors.white,
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 30.sp,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                         TextSpan(
                           text: 'note',
                           style: GoogleFonts.outfit(
                             color: const Color(0xFF4361EE),
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 30.sp,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                         TextSpan(
                           text: '\ntaking ',
                           style: GoogleFonts.outfit(
                             color: const Color(0xFF4361EE),
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 30.sp,
+                            fontWeight: FontWeight.w500,
+                            height: 1.h,
                           ),
                         ),
                         TextSpan(
                           text: 'partner.',
                           style: GoogleFonts.outfit(
                             color: Colors.white,
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 30.sp,
+                            fontWeight: FontWeight.w500,
+                            height: 1.h,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 6),
+                  SizedBox(height: 8.h),
                   Text(
                     "Designed by DVxUI",
                     style: GoogleFonts.outfit(
                       color: const Color(0xff5F5F5F),
-                      fontSize: 14,
+                      fontSize: 12.sp,
                     ),
                   ),
-                  const SizedBox(height: 160),
+                  SizedBox(height: 100.h),
                   ElevatedButton.icon(
                     onPressed: () async {
                       try {
@@ -96,7 +99,7 @@ class SignUpView extends GetView<SignUpController> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ProfileView(),
+                              builder: (context) =>  HomeView(),
                             ),
                           );
                         }
@@ -109,7 +112,7 @@ class SignUpView extends GetView<SignUpController> {
                       "Continue with Google",
                       style: GoogleFonts.outfit(
                         color: Colors.white,
-                        fontSize: 18,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -119,19 +122,19 @@ class SignUpView extends GetView<SignUpController> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 50, vertical: 14), // Button size
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 50.w, vertical: 14.h),
                     ),
                   ),
-                  const SizedBox(height: 30),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 30.0),
+                  SizedBox(height: 30.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 30.0.w),
                     child: Text(
                       "Note: By signing up with Google you are agreeing to our terms & conditions and privacy policy.",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Color(0xff5F5F5F),
-                        fontSize: 14,
+                        fontSize: 12.sp,
                       ),
                     ),
                   ),
