@@ -22,7 +22,8 @@ class CategoryButton extends StatelessWidget {
             color: isSelected ? Color(0xff4361EE) : Colors.transparent,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: text == "All notes" ? Color(0xff4361EE) : Color(0xff5F5F5F),
+              color:
+                  text == "All notes" ? Color(0xff4361EE) : Color(0xff5F5F5F),
             ),
           ),
           child: Text(
@@ -40,15 +41,13 @@ class CategoryButton extends StatelessWidget {
 class Notescard extends StatelessWidget {
   final String title;
   final DateTime date;
-  final List<String> tags;
   final String description;
 
-  Notescard(
-      {required this.title,
-      required this.date,
-      required this.description,
-      required this.tags,
-      });
+  const Notescard({
+    required this.title,
+    required this.date,
+    required this.description,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +86,60 @@ class Notescard extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10.h),
-  
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class NotescardView extends StatelessWidget {
+  final String title;
+  final String description;
+  const NotescardView({
+    required this.title,
+    required this.description,
+  }) : super();
+
+  @override
+  Widget build(BuildContext context) {
+    String formattedDate = DateFormat('d MMM').format(DateTime.now());
+    return Card(
+      color: Color(0xFF1F2028),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              formattedDate,
+              style: GoogleFonts.outfit(
+                color: Color(0xff4361EE),
+                fontSize: 14.sp,
+              ),
+            ),
+            Text(
+              title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.outfit(
+                color: Colors.white,
+                fontSize: 28.sp,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            Text(
+              description,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.outfit(
+                color: Colors.white24,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            SizedBox(height: 10.h),
           ],
         ),
       ),

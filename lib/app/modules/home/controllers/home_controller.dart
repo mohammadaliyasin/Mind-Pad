@@ -4,22 +4,22 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  String uid = '';
-
   var user = Rx<User?>(null);
   var notes = [].obs;
-  var filteredNotes = [].obs;
-  var selectedTag = ''.obs;
-  
+
   @override
   void onInit() {
     super.onInit();
     user.value = _auth.currentUser;
+    if (user.value != null) {
+      String uid = user.value!.uid;
+    }
     fetchNotes();
+      notes.addAll([
+    ]);
   }
 
   String getGreetingMessage() {
@@ -34,35 +34,27 @@ class HomeController extends GetxController {
   }
 
   void fetchNotes() async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    final User? user = auth.currentUser;
-
-    if (user != null) {
-      String uid = user.uid;
-      FirebaseFirestore.instance
-          .collection('tasks')
-          .doc(uid)
-          .collection('mytasks')
-          .snapshots()
-          .listen((snapshot) {
-        notes.value = snapshot.docs.map((doc) => doc.data()).toList();
-      });
+    if (user.value != null) {
+      String uid = user.value!.uid;
+      try {
+        FirebaseFirestore.instance
+            .collection('tasks')
+            .doc(uid)
+            .collection('mytasks')
+            .snapshots()
+            .listen((snapshot) {
+          notes.value = snapshot.docs.map((doc) => doc.data()).toList();
+        });
+      } catch (e) {
+        print('Error fetching notes: $e');
+      }
     }
   }
 
-  void filterNotes() {
-    if (selectedTag.value.isEmpty || selectedTag.value == 'All notes') {
-      filteredNotes.value = notes;
-    } else {
-      filteredNotes.value = notes.where((note) {
-        List<String> tags = List<String>.from(note['tags'] ?? []);
-        return tags.contains(selectedTag.value);
-      }).toList();
-    }
-  }
-
-  void selectTag(String tag) {
-    selectedTag.value = tag;
-    filterNotes();
+  Future<void> signOut() async {
+    await _googleSignIn.signOut();
+    await _auth.signOut();
+    user.value = null;
+    notes.clear();
   }
 }

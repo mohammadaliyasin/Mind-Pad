@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mind_pad/app/modules/home/views/home_view.dart';
 import 'package:mind_pad/app/modules/profile/views/profile_view.dart';
+import 'package:mind_pad/app/services/services/auth/authServices.dart';
 import '../controllers/sign_up_controller.dart';
 
 class SignUpView extends GetView<SignUpController> {
@@ -92,20 +93,9 @@ class SignUpView extends GetView<SignUpController> {
                   ),
                   SizedBox(height: 100.h),
                   ElevatedButton.icon(
-                    onPressed: () async {
-                      try {
-                        controller.signInWithGoogle();
-                        if (controller.user != null) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>  HomeView(),
-                            ),
-                          );
-                        }
-                      } catch (e) {
-                        print(e);
-                      }
+                    onPressed: () {
+                      // await controller.signInWithGoogle();
+                      Get.off(HomeView());
                     },
                     icon: Image.asset('assets/images/google.png'),
                     label: Text(

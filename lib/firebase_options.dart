@@ -59,4 +59,5 @@ class DefaultFirebaseOptions {
     projectId: 'mindpad-55ac1',
     storageBucket: 'mindpad-55ac1.appspot.com',
   );
+
 }

@@ -12,7 +12,20 @@
           "package_name": "com.mindpad.mind_pad"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "846872666518-32meb50g69nja4a0q4iq4n7d6l1r9tmt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mindpad.mind_pad",
+            "certificate_hash": "ff190989d9acca8a4d2e5d867b2664ad2a2c8854"
+          }
+        },
+        {
+          "client_id": "846872666518-8mqjd5lpd6uobfg8u1k273vhfvvt4vs0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC8KWytufBwFSCBoCdNl58OLDzhu5LOVWE"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "846872666518-4nr7k0anejqgao3e22038tkgasgboe49.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

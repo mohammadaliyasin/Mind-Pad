@@ -43,6 +43,7 @@ class AddNotesView extends GetView<AddNotesController> {
   @override
   Widget build(BuildContext context) {
     String formattedDate = DateFormat('d MMM, yy').format(DateTime.now());
+    
     return Scaffold(
       backgroundColor: const Color(0xff15161E),
       appBar: AppBar(
@@ -86,6 +87,7 @@ class AddNotesView extends GetView<AddNotesController> {
           ElevatedButton(
             onPressed: () {
               addTaskToFirebase();
+
             },
             child: Text(
               'Save',
