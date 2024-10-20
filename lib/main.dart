@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:mind_pad/app/modules/AddNotes/controllers/add_notes_controller.dart';
 import 'package:mind_pad/app/modules/home/controllers/home_controller.dart';
 import 'package:mind_pad/app/modules/profile/controllers/profile_controller.dart';
 import 'firebase_options.dart';
@@ -13,9 +15,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  Get.lazyPut<ProfileController>(() => ProfileController());
-  Get.lazyPut<HomeController>(() => HomeController());
-    SystemChrome.setPreferredOrientations([
+  SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]).then((_) {
@@ -27,14 +27,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: Size(360, 690), 
+      designSize: Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
-          title: "Application",
-          initialRoute: AppPages.INITIAL,
+          title: "MindPad",
+          initialRoute: FirebaseAuth.instance.currentUser == null ? Routes.SIGN_UP : Routes.HOME,
           getPages: AppPages.routes,
           builder: (context, widget) {
             ScreenUtil.init(context);

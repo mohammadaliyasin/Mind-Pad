@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,17 +10,14 @@ class HomeController extends GetxController {
 
   var user = Rx<User?>(null);
   var notes = [].obs;
+  var filteredNotes = [].obs;
+  var selectedCategory = 'All notes'.obs;
 
   @override
   void onInit() {
     super.onInit();
     user.value = _auth.currentUser;
-    if (user.value != null) {
-      String uid = user.value!.uid;
-    }
     fetchNotes();
-      notes.addAll([
-    ]);
   }
 
   String getGreetingMessage() {
@@ -33,21 +31,57 @@ class HomeController extends GetxController {
     }
   }
 
-  void fetchNotes() async {
+void fetchNotes() async {
+  if (user.value != null) {
+    String uid = user.value!.uid;
+    try {
+      FirebaseFirestore.instance
+          .collection('tasks')
+          .doc(uid)
+          .collection('mytasks')
+          .snapshots()
+          .listen((snapshot) {
+        notes.value = snapshot.docs.map((doc) => {
+          ...doc.data(),
+          'id': doc.id,
+        }).toList();
+        filterNotes(selectedCategory.value);
+      });
+    } catch (e) {
+      print('Error fetching notes: $e');
+    }
+  }
+}
+
+  void filterNotes(String category) {
+    selectedCategory.value = category;
+    if (category == 'All notes') {
+      filteredNotes.assignAll(notes); 
+    } else {
+      filteredNotes.assignAll(
+          notes.where((note) => note['category'] == category).toList());
+    }
+  }
+
+  Future<void> deleteNote(String docId) async {
     if (user.value != null) {
       String uid = user.value!.uid;
       try {
-        FirebaseFirestore.instance
+        await FirebaseFirestore.instance
             .collection('tasks')
             .doc(uid)
             .collection('mytasks')
-            .snapshots()
-            .listen((snapshot) {
-          notes.value = snapshot.docs.map((doc) => doc.data()).toList();
-        });
+            .doc(docId)
+            .delete();
+
+        Fluttertoast.showToast(msg: 'Note Deleted');
+        fetchNotes();
       } catch (e) {
-        print('Error fetching notes: $e');
+        print('Error deleting note: $e');
+        Fluttertoast.showToast(msg: 'Failed to delete note: $e');
       }
+    } else {
+      Fluttertoast.showToast(msg: 'User not authenticated');
     }
   }
 
@@ -56,5 +90,6 @@ class HomeController extends GetxController {
     await _auth.signOut();
     user.value = null;
     notes.clear();
+    filteredNotes.clear();
   }
 }

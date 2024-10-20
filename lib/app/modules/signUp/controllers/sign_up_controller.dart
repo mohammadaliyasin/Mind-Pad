@@ -11,23 +11,8 @@ class SignUpController extends GetxController {
       await _authServices.signInWithGoogle();
     } catch (e) {
       print('Error during Google Sign-In: $e');
+
+      Get.snackbar('Sign-In Error', 'Failed to sign in with Google. Please try again.');
     }
   }
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

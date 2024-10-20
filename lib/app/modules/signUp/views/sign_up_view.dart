@@ -68,7 +68,7 @@ class SignUpView extends GetView<SignUpController> {
                             color: const Color(0xFF4361EE),
                             fontSize: 30.sp,
                             fontWeight: FontWeight.w500,
-                            height: 1.h,
+                            height: 0.1.h,
                           ),
                         ),
                         TextSpan(
@@ -93,9 +93,9 @@ class SignUpView extends GetView<SignUpController> {
                   ),
                   SizedBox(height: 100.h),
                   ElevatedButton.icon(
-                    onPressed: () {
-                      // await controller.signInWithGoogle();
-                      Get.off(HomeView());
+                    onPressed: () async {
+                      await controller.signInWithGoogle();
+                      Get.offNamed('/home');
                     },
                     icon: Image.asset('assets/images/google.png'),
                     label: Text(

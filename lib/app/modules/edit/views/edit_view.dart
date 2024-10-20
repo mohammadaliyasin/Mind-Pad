@@ -1,45 +1,34 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-import '../controllers/add_notes_controller.dart';
+import '../controllers/edit_controller.dart';
 
-class AddNotesView extends GetView<AddNotesController> {
-  AddNotesView({super.key});
+class EditView extends StatefulWidget {
+  final String? title;
+  final String? description;
+  final String docId;
 
+  const EditView({this.title, this.description, required this.docId, super.key});
+
+  @override
+  _EditViewState createState() => _EditViewState();
+}
+
+class _EditViewState extends State<EditView> {
+  final EditController controller = Get.put(EditController());
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
-  Future<void> addTaskToFirebase() async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    final User? user = auth.currentUser;
-
-    if (user != null) {
-      String uid = user.uid;
-      var time = DateTime.now();
-      await FirebaseFirestore.instance
-          .collection('tasks')
-          .doc(uid)
-          .collection('mytasks')
-          .doc(time.toString())
-          .set({
-        'title': titleController.text,
-        'description': descriptionController.text,
-        'time': time.toString(),
-        'timestamp': time,
-      });
-      Fluttertoast.showToast(msg: 'Data Added');
-    }
+  @override
+  void initState() {
+    super.initState();
+    titleController.text = widget.title ?? '';
+    descriptionController.text = widget.description ?? '';
   }
 
   @override
   Widget build(BuildContext context) {
-    String formattedDate = DateFormat('d MMM, yy').format(DateTime.now());
-
     return Scaffold(
       backgroundColor: const Color(0xff15161E),
       appBar: AppBar(
@@ -47,44 +36,27 @@ class AddNotesView extends GetView<AddNotesController> {
         elevation: 0,
         iconTheme: const IconThemeData(color: Color(0xffffffff)),
         title: Text(
-          'Add a note',
+          'Edit Note',
           style: GoogleFonts.outfit(
-            fontSize: 20,
+            fontSize: 20.sp,
             color: const Color(0xffFFFFFF),
-            fontWeight: FontWeight.w500,
           ),
         ),
         actions: [
-          Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(15),
-              color: const Color(0xff1F2028),
-            ),
-            child: IconButton(
-              icon: const Icon(Icons.push_pin, color: Color(0xffFFFFFF)),
-              onPressed: () {
-                // Pin logic here
-              },
-            ),
-          ),
-          SizedBox(
-            width: 10.w,
-          ),
           ElevatedButton(
             onPressed: () {
-              addTaskToFirebase();
+              controller.updateNote(
+                widget.docId,
+                titleController.text,
+                descriptionController.text,
+              );
             },
             child: Text(
               'Save',
-              style: GoogleFonts.outfit(
-                color: const Color(0xffffffff),
-              ),
+              style: GoogleFonts.outfit(color: const Color(0xffffffff)),
             ),
-            style: const ButtonStyle(
-              backgroundColor: WidgetStatePropertyAll(
-                Color(0xff4361EE),
-              ),
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all(Color(0xff4361EE)),
             ),
           ),
           SizedBox(width: 10.w),
@@ -95,18 +67,6 @@ class AddNotesView extends GetView<AddNotesController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                'Date: $formattedDate',
-                style: GoogleFonts.outfit(
-                  color: const Color(0xff8F8F93),
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4),

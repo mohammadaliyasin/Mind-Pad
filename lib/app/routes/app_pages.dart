@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../modules/AddNotes/bindings/add_notes_binding.dart';
 import '../modules/AddNotes/views/add_notes_view.dart';
+import '../modules/edit/bindings/edit_binding.dart';
+import '../modules/edit/views/edit_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
@@ -36,6 +38,11 @@ class AppPages {
       name: _Paths.ADD_NOTES,
       page: () => AddNotesView(),
       binding: AddNotesBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT,
+      page: () => EditView(docId: 'your_doc_id_here'),
+      binding: EditBinding(),
     ),
   ];
 }

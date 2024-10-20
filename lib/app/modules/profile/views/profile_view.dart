@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mind_pad/app/modules/signUp/views/sign_up_view.dart';
 import '../controllers/profile_controller.dart';
 
-
 class ProfileView extends GetView<ProfileController> {
   const ProfileView({super.key});
 
@@ -29,7 +28,9 @@ class ProfileView extends GetView<ProfileController> {
           Padding(
             padding: EdgeInsets.only(right: 16.0.w),
             child: OutlinedButton(
-              onPressed: () {},
+              onPressed: () {
+                signOut();
+              },
               style: OutlinedButton.styleFrom(
                 side: BorderSide(
                   color: Color(0xff4361EE),
@@ -39,7 +40,7 @@ class ProfileView extends GetView<ProfileController> {
                 ),
               ),
               child: Text(
-                'Edit Details',
+                'SignOut',
                 style: GoogleFonts.outfit(
                   color: Color(0xffFFFFFF),
                   fontWeight: FontWeight.w500,
@@ -58,23 +59,30 @@ class ProfileView extends GetView<ProfileController> {
             children: [
               SizedBox(height: 15),
               Obx(() {
-              return CircleAvatar(
-                foregroundImage: controller.user.value?.photoURL != null
-                    ? NetworkImage(controller.user.value!.photoURL!)
-                    : null,
-                radius: 50.r,
-                backgroundColor: Color(0xff1F2028),
-              );
-            }),
+                return CircleAvatar(
+                  foregroundImage: controller.user.value?.photoURL != null
+                      ? NetworkImage(controller.user.value!.photoURL!)
+                      : null,
+                  radius: 50.r,
+                  backgroundColor: Color(0xff1F2028),
+                );
+              }),
               SizedBox(height: 10),
               Obx(() {
+                String displayName =
+                    controller.user.value?.displayName ?? 'Guest';
+                String formattedName = displayName.split(' ').map((word) {
+                  return word[0].toUpperCase() +
+                      word.substring(1).toLowerCase();
+                }).join(' ');
                 return Text(
-                  "${controller.user.value?.displayName ?? 'Guest'}",
+                  formattedName,
                   style: GoogleFonts.outfit(
                     fontSize: 32.sp,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                     color: Colors.white,
                   ),
+                  textAlign: TextAlign.center,
                 );
               }),
               SizedBox(height: 8),
@@ -134,6 +142,10 @@ class ProfileView extends GetView<ProfileController> {
         ),
       ),
     );
+  }
+
+  void signOut() {
+    Get.offAll(() => SignUpView());
   }
 
   Widget buildListItem(String title) {

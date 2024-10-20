@@ -9,27 +9,12 @@ class AddNotesController extends GetxController {
 
 
   var isPinned = false.obs;
+  
 
   Future<void> togglePin() async {
     isPinned.value = !isPinned.value;
     Fluttertoast.showToast(msg: isPinned.value ? 'Note Pinned' : 'Note Unpinned');
   }
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
+  
 }

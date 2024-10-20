@@ -6,26 +6,48 @@ class AuthServices extends GetxService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  Future<User?> signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) {
-        return null; // The user canceled the sign-in
-      }
+  // Future<User?> signInWithGoogle() async {
+  //   try {
 
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
+  //     _auth.setLanguageCode('en');
 
-      final UserCredential userCredential = await _auth.signInWithCredential(credential);
-      return userCredential.user;
-    } catch (e) {
-      print('Error during Google Sign-In: $e');
-      return null;
-    }
+  //     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+  //     if (googleUser == null) {
+  //       return null; // The user canceled the sign-in
+  //     }
+
+  //     final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+  //     final AuthCredential credential = GoogleAuthProvider.credential(
+  //       accessToken: googleAuth.accessToken,
+  //       idToken: googleAuth.idToken,
+  //     );
+
+  //     final UserCredential userCredential = await _auth.signInWithCredential(credential);
+  //     return userCredential.user;
+  //   } catch (e) {
+  //     print('Error during Google sign-in: $e');
+  //     return null;
+  //   }
+  // }
+
+
+  // for sign in
+  Future<UserCredential> signInWithGoogle() async {
+    FirebaseAuth.instance.setLanguageCode("en");
+
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser!.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
+
   // for sign out
   googleSignOut() async {
     await _auth.signOut();
