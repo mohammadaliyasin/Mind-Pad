@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -6,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:mind_pad/app/modules/edit/views/edit_view.dart';
-
 import '../modules/AddNotes/views/add_notes_view.dart';
 
 class CategoryButton extends StatelessWidget {
@@ -54,12 +52,14 @@ class Notescard extends StatelessWidget {
   final String? timestamp;
   final String description;
   final String docId;
+  final List<String> tags;
 
   const Notescard({
     required this.title,
     this.timestamp,
     required this.description,
     required this.docId,
+    required this.tags,
   });
 
   @override
@@ -75,64 +75,69 @@ class Notescard extends StatelessWidget {
     } else {
       formattedDate = 'No Date';
     }
-    return GestureDetector(
-      onTap: () {
-        Get.to(() => EditView(
-          docId: docId,
-          title: title,
-          description: description,
-        ));
-      },
-      child: Card(
-        color: const Color(0xFF1F2028),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                formattedDate,
-                style: GoogleFonts.outfit(
-                  color: const Color(0xff4361EE),
-                  fontSize: 14.sp,
-                ),
+    return Card(
+      color: const Color(0xFF1F2028),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              formattedDate,
+              style: GoogleFonts.outfit(
+                color: const Color(0xff4361EE),
+                fontSize: 14.sp,
               ),
-              SizedBox(
-                height: 5.h,
+            ),
+            SizedBox(
+              height: 5.h,
+            ),
+            Text(
+              title,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              style: GoogleFonts.outfit(
+                color: Colors.white,
+                fontSize: 28.sp,
+                fontWeight: FontWeight.w500,
+                height: 1.h,
               ),
-              Text(
-                title,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                style: GoogleFonts.outfit(
-                  color: Colors.white,
-                  fontSize: 28.sp,
-                  fontWeight: FontWeight.w500,
-                  height: 1.h,
-                ),
+            ),
+            SizedBox(
+              height: 5.h,
+            ),
+            Text(
+              description,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.outfit(
+                color: Colors.white24,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w400,
               ),
-              SizedBox(
-                height: 5.h,
-              ),
-              Text(
-                description,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.outfit(
-                  color: Colors.white24,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              SizedBox(height: 10.h),
-            ],
-          ),
+            ),
+            SizedBox(height: 10.h),
+            const Divider(color: Color(0xff3D3E46)),
+            Wrap(
+              spacing: 8.0,
+              children: tags.map((tag) {
+                return Chip(
+                  side: const BorderSide(width: 0,color: Color(0xff15161E)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r),),
+                  label: Text(tag),
+                  backgroundColor: const Color(0xff15161E),
+                  labelStyle: GoogleFonts.outfit(color: Colors.white54),
+                );
+              }).toList(),
+            ),
+          ],
         ),
       ),
     );
   }
 }
+
 class NotescardView extends StatelessWidget {
   final String title;
   final String description;
@@ -140,12 +145,14 @@ class NotescardView extends StatelessWidget {
   final String docId;
   const NotescardView({
     required this.title,
-    required this.description, this.timestamp,required this.docId,
+    required this.description,
+    this.timestamp,
+    required this.docId,
   }) : super();
 
   @override
   Widget build(BuildContext context) {
-        String formattedDate;
+    String formattedDate;
     if (timestamp != null) {
       try {
         DateTime savedTime = DateTime.parse(timestamp!);
@@ -174,11 +181,11 @@ class NotescardView extends StatelessWidget {
           SizedBox(width: 5.w),
           ElevatedButton(
             onPressed: () {
-             Get.to(() => EditView(
-                docId: docId,
-                title: title,
-                description: description,
-              ));
+              Get.to(() => EditView(
+                    docId: docId,
+                    title: title,
+                    description: description,
+                  ));
             },
             child: Text(
               'Edit',
@@ -195,67 +202,59 @@ class NotescardView extends StatelessWidget {
           SizedBox(width: 10.w),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.all(16.0.r),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  'Date: $formattedDate',
-                  style: GoogleFonts.outfit(
-                    color: const Color(0xff8F8F93),
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14.sp,
-                  ),
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(16.0.r),
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                'Date: $formattedDate',
+                style: GoogleFonts.outfit(
+                  color: const Color(0xff8F8F93),
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14.sp,
                 ),
               ),
             ),
-            Container(
-              width: double.infinity.h,
-              height: MediaQuery.of(context).size.height,
-              color: const Color(0xff1F2028),
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: GoogleFonts.outfit(
-                      color: Colors.white,
-                      fontSize: 40.sp,
-                      fontWeight: FontWeight.w400,
-                      height: 1.h,
+          ),
+          Container(
+            width: double.infinity.h,
+            height: MediaQuery.of(context).size.height * 0.834,
+            color: const Color(0xff1F2028),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: GoogleFonts.outfit(
+                        color: Colors.white,
+                        fontSize: 40.sp,
+                        fontWeight: FontWeight.w400,
+                        height: 1.h,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Text(
-                    description,
-                    style: GoogleFonts.outfit(
-                      color: Colors.white24,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
+                    SizedBox(
+                      height: 5.h,
                     ),
-                  ),
-                ],
+                    Text(
+                      description,
+                      style: GoogleFonts.outfit(
+                        color: Colors.white24,
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Get.to(AddNotesView());
-        },
-        child: Icon(
-          CupertinoIcons.sparkles,
-          size: 26.r,
-          color: const Color(0xffffffff),
-        ),
-        backgroundColor: const Color(0xff4361EE),
+          ),
+        ],
       ),
     );
   }

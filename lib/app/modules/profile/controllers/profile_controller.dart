@@ -1,24 +1,30 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:mind_pad/app/modules/signUp/views/sign_up_view.dart';
+
+import '../../../services/services/auth/authServices.dart';
 
 class ProfileController extends GetxController {
-  //TODO: Implement ProfileController
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final AuthServices _authServices = AuthServices();
 
   var user = Rx<User?>(null);
 
   @override
   void onInit() {
     super.onInit();
-    user.value = _auth.currentUser;
+    user.value = FirebaseAuth.instance.currentUser;
   }
 
   Future<void> signOut() async {
-    await _googleSignIn.signOut();
-    await _auth.signOut();
-    user.value = null;
+    try {
+      await _authServices.googleSignOut();
+      user.value = null;
+      Get.offAll(
+        () => const SignUpView(),
+      );
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to sign out: $e');
+    }
   }
-
 }

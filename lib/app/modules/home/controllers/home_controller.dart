@@ -6,12 +6,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomeController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   var user = Rx<User?>(null);
   var notes = [].obs;
   var filteredNotes = [].obs;
-  var selectedCategory = 'All notes'.obs;
+  var selectedTag = 'All notes'.obs;
+  var tags = <String>['All notes'].obs;
 
   @override
   void onInit() {
@@ -31,35 +31,49 @@ class HomeController extends GetxController {
     }
   }
 
-void fetchNotes() async {
-  if (user.value != null) {
-    String uid = user.value!.uid;
-    try {
-      FirebaseFirestore.instance
-          .collection('tasks')
-          .doc(uid)
-          .collection('mytasks')
-          .snapshots()
-          .listen((snapshot) {
-        notes.value = snapshot.docs.map((doc) => {
-          ...doc.data(),
-          'id': doc.id,
-        }).toList();
-        filterNotes(selectedCategory.value);
-      });
-    } catch (e) {
-      print('Error fetching notes: $e');
+    fetchNotes() {
+    if (user.value != null) {
+      String uid = user.value!.uid;
+      try {
+       FirebaseFirestore.instance
+            .collection('tasks')
+            .doc(uid)
+            .collection('mytasks')
+            .snapshots()
+            .listen((snapshot) {
+          notes.value = snapshot.docs.map((doc) {
+            var data = doc.data();
+            var tags = List<String>.from(data['tags'] ?? []);
+            return {
+              ...data,
+              'id': doc.id,
+              'tags': tags,
+            };
+          }).toList();
+          updateTags();
+          filterByTag(selectedTag.value);
+        });
+      } catch (e) {
+        print('Error fetching notes: $e');
+      }
     }
   }
-}
 
-  void filterNotes(String category) {
-    selectedCategory.value = category;
-    if (category == 'All notes') {
-      filteredNotes.assignAll(notes); 
+  void updateTags() {
+    var allTags = <String>{'All notes'};
+    for (var note in notes) {
+      allTags.addAll(note['tags']);
+    }
+    tags.value = allTags.toList();
+  }
+
+  void filterByTag(String tag) {
+    selectedTag.value = tag;
+    if (tag == 'All notes') {
+      filteredNotes.assignAll(notes);
     } else {
       filteredNotes.assignAll(
-          notes.where((note) => note['category'] == category).toList());
+          notes.where((note) => note['tags'].contains(tag)).toList());
     }
   }
 
@@ -83,13 +97,5 @@ void fetchNotes() async {
     } else {
       Fluttertoast.showToast(msg: 'User not authenticated');
     }
-  }
-
-  Future<void> signOut() async {
-    await _googleSignIn.signOut();
-    await _auth.signOut();
-    user.value = null;
-    notes.clear();
-    filteredNotes.clear();
   }
 }

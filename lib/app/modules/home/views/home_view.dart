@@ -7,13 +7,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mind_pad/app/modules/AddNotes/views/add_notes_view.dart';
 import 'package:mind_pad/app/modules/profile/views/profile_view.dart';
 import '../../../Component/categoryButton.dart';
+import '../../AddNotes/controllers/add_notes_controller.dart';
 import '../controllers/home_controller.dart';
 
-class HomeView extends StatelessWidget {
-  final HomeController controller = Get.put(HomeController());
+class HomeView extends GetView<HomeController> {
+  const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Get.put(HomeController());
     return Scaffold(
       backgroundColor: const Color(0xff15161E),
       appBar: AppBar(
@@ -59,7 +61,7 @@ class HomeView extends StatelessWidget {
               return GestureDetector(
                 onTap: () {
                   Get.to(
-                    const ProfileView(),
+                    () => const ProfileView(),
                   );
                 },
                 child: CircleAvatar(
@@ -79,56 +81,39 @@ class HomeView extends StatelessWidget {
           SizedBox(
             height: 10.h,
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Container(
-              color: const Color(0xff1F2028),
-              height: 50.h,
-              child: Row(
-                children: [
-                  Obx(() => CategoryButton(
-                        text: 'All notes',
-                        isSelected:
-                            controller.selectedCategory.value == 'All notes',
-                        onPressed: () {
-                          controller.filterNotes('All notes');
-                        },
-                      )),
-                  Obx(() => CategoryButton(
-                        text: 'College',
-                        isSelected:
-                            controller.selectedCategory.value == 'College',
-                        onPressed: () {
-                          controller.filterNotes('College');
-                        },
-                      )),
-                  Obx(() => CategoryButton(
-                        text: 'Personal',
-                        isSelected:
-                            controller.selectedCategory.value == 'Personal',
-                        onPressed: () {
-                          controller.filterNotes('Personal');
-                        },
-                      )),
-                  Obx(() => CategoryButton(
-                        text: 'Study',
-                        isSelected:
-                            controller.selectedCategory.value == 'Study',
-                        onPressed: () {
-                          controller.filterNotes('Study');
-                        },
-                      )),
-                  Obx(() => CategoryButton(
-                        text: 'Goals',
-                        isSelected:
-                            controller.selectedCategory.value == 'Goals',
-                        onPressed: () {
-                          controller.filterNotes('Goals');
-                        },
-                      )),
-                ],
-              ),
-            ),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Obx(() {
+                  double containerWidth = constraints.maxWidth;
+                  double tagWidth = 0.0;
+                  for (var tag in controller.tags) {
+                    tagWidth += (tag.length * 10.0) +
+                        20.0;
+                  }
+                  containerWidth =
+                      containerWidth > tagWidth ? containerWidth : tagWidth;
+
+                  return Container(
+                    width: containerWidth,
+                    color: const Color(0xff1F2028),
+                    height: 50.h,
+                    child: Row(
+                      children: controller.tags.map((tag) {
+                        return CategoryButton(
+                          text: tag,
+                          isSelected: controller.selectedTag.value == tag,
+                          onPressed: () {
+                            controller.filterByTag(tag);
+                          },
+                        );
+                      }).toList(),
+                    ),
+                  );
+                }),
+              );
+            },
           ),
           SizedBox(
             height: 10.h,
@@ -136,17 +121,17 @@ class HomeView extends StatelessWidget {
           Expanded(
             child: Obx(() {
               if (controller.notes.isEmpty) {
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: Color(0xff4361EE),
-                  ),
-                );
-              } else if (controller.filteredNotes.isEmpty) {
                 return Center(
                   child: Text(
                     'No notes available. Please add some notes.',
                     style: TextStyle(color: Colors.white, fontSize: 12.sp),
                     textAlign: TextAlign.center,
+                  ),
+                );
+              } else if (controller.filteredNotes.isEmpty) {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: Color(0xff4361EE),
                   ),
                 );
               } else {
@@ -169,7 +154,7 @@ class HomeView extends StatelessWidget {
                                     : null,
                                 description:
                                     note['description'] ?? 'No Description',
-                                    docId: note['id'],
+                                docId: note['id'],
                               ));
                         },
                         onLongPress: () {
@@ -184,7 +169,7 @@ class HomeView extends StatelessWidget {
                                   style: GoogleFonts.outfit(
                                     fontSize: 30.sp,
                                     fontWeight: FontWeight.w500,
-                                    color: Color(0xff4361EE),
+                                    color: const Color(0xff4361EE),
                                   ),
                                 ),
                                 content: Text(
@@ -192,7 +177,7 @@ class HomeView extends StatelessWidget {
                                   style: GoogleFonts.outfit(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w400,
-                                    color: Color(0xffffffff),
+                                    color: const Color(0xffffffff),
                                   ),
                                 ),
                                 actions: [
@@ -205,7 +190,7 @@ class HomeView extends StatelessWidget {
                                       style: GoogleFonts.outfit(
                                         fontSize: 14.sp,
                                         fontWeight: FontWeight.w400,
-                                        color: Color(0xffffffff),
+                                        color: const Color(0xffffffff),
                                       ),
                                     ),
                                   ),
@@ -224,7 +209,8 @@ class HomeView extends StatelessWidget {
                                       style: GoogleFonts.outfit(
                                         fontSize: 14.sp,
                                         fontWeight: FontWeight.w400,
-                                        color: Color.fromARGB(255, 240, 82, 82),
+                                        color: const Color.fromARGB(
+                                            255, 240, 82, 82),
                                       ),
                                     ),
                                   ),
@@ -242,6 +228,9 @@ class HomeView extends StatelessWidget {
                               : null,
                           description: note['description'] ?? 'No Description',
                           docId: note['id'],
+                          tags: note['tags'] != null
+                              ? List<String>.from(note['tags'])
+                              : [],
                         ),
                       );
                     }),
@@ -257,14 +246,14 @@ class HomeView extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.to(AddNotesView());
+          Get.to(() => const AddNotesView());
         },
         child: Icon(
           Icons.edit,
           size: 30.r,
-          color: Color(0xffffffff),
+          color: const Color(0xffffffff),
         ),
-        backgroundColor: Color(0xff4361EE),
+        backgroundColor: const Color(0xff4361EE),
       ),
     );
   }

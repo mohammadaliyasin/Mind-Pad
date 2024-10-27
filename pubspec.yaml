@@ -51,6 +51,9 @@ dependencies:
   auto_size_text: ^3.0.0
   strings: ^3.1.2
   font_awesome_flutter: ^10.7.0
+  http: ^1.2.2
+  animated_text_kit: ^4.2.2
+  google_generative_ai: ^0.4.6
   
 flutter_native_splash:
   color: "#15161E"

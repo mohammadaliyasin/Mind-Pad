@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:mind_pad/app/modules/home/views/home_view.dart';
 import '../controllers/edit_controller.dart';
 
 class EditView extends StatefulWidget {
@@ -29,6 +31,7 @@ class _EditViewState extends State<EditView> {
 
   @override
   Widget build(BuildContext context) {
+    String formattedDate = DateFormat('d MMM, yy').format(DateTime.now());
     return Scaffold(
       backgroundColor: const Color(0xff15161E),
       appBar: AppBar(
@@ -44,12 +47,13 @@ class _EditViewState extends State<EditView> {
         ),
         actions: [
           ElevatedButton(
-            onPressed: () {
-              controller.updateNote(
+            onPressed: () async{
+             await controller.updateNote(
                 widget.docId,
                 titleController.text,
                 descriptionController.text,
               );
+              Get.offAll(() => HomeView());
             },
             child: Text(
               'Save',
@@ -67,12 +71,25 @@ class _EditViewState extends State<EditView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+                        Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                'Date: $formattedDate',
+                style: GoogleFonts.outfit(
+                  color: const Color(0xff8F8F93),
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4),
                 color: const Color(0xff1F2028),
               ),
               child: TextField(
+                cursorColor: Color(0xff4361EE),
                 controller: titleController,
                 style: const TextStyle(
                   fontSize: 16,
@@ -98,6 +115,7 @@ class _EditViewState extends State<EditView> {
                 ),
                 child: SingleChildScrollView(
                   child: TextField(
+                    cursorColor: Color(0xff4361EE),
                     controller: descriptionController,
                     decoration: const InputDecoration(
                       hintText: 'Your note content here...',

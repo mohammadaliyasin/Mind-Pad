@@ -21,7 +21,7 @@ class AppPages {
   static final routes = [
     GetPage(
       name: _Paths.HOME,
-      page: () => HomeView(),
+      page: () => const HomeView(),
       binding: HomeBinding(),
     ),
     GetPage(
@@ -36,12 +36,12 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.ADD_NOTES,
-      page: () => AddNotesView(),
+      page: () => const AddNotesView(),
       binding: AddNotesBinding(),
     ),
     GetPage(
       name: _Paths.EDIT,
-      page: () => EditView(docId: 'your_doc_id_here'),
+      page: () =>const EditView(docId: 'your_doc_id_here'),
       binding: EditBinding(),
     ),
   ];

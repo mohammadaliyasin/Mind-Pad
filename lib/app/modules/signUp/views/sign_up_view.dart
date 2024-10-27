@@ -12,6 +12,7 @@ class SignUpView extends GetView<SignUpController> {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(SignUpController());
     return Container(
       height: MediaQuery.sizeOf(context).height,
       width: MediaQuery.sizeOf(context).width,
@@ -123,7 +124,7 @@ class SignUpView extends GetView<SignUpController> {
                       "Note: By signing up with Google you are agreeing to our terms & conditions and privacy policy.",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Color(0xff5F5F5F),
+                        color: const Color(0xff5F5F5F),
                         fontSize: 12.sp,
                       ),
                     ),
