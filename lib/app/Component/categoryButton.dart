@@ -244,7 +244,7 @@ class NotescardView extends StatelessWidget {
                     Text(
                       description,
                       style: GoogleFonts.outfit(
-                        color: Colors.white24,
+                        color: Colors.white54,
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w500,
                       ),
