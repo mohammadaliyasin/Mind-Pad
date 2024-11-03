@@ -53,14 +53,14 @@ class _EditViewState extends State<EditView> {
                 titleController.text,
                 descriptionController.text,
               );
-              Get.offAll(() => HomeView());
+              Get.offAll(() => const HomeView());
             },
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all(const Color(0xff4361EE)),
+            ),
             child: Text(
               'Save',
               style: GoogleFonts.outfit(color: const Color(0xffffffff)),
-            ),
-            style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all(Color(0xff4361EE)),
             ),
           ),
           SizedBox(width: 10.w),
@@ -89,7 +89,7 @@ class _EditViewState extends State<EditView> {
                 color: const Color(0xff1F2028),
               ),
               child: TextField(
-                cursorColor: Color(0xff4361EE),
+                cursorColor: const Color(0xff4361EE),
                 controller: titleController,
                 style: const TextStyle(
                   fontSize: 16,
@@ -115,7 +115,7 @@ class _EditViewState extends State<EditView> {
                 ),
                 child: SingleChildScrollView(
                   child: TextField(
-                    cursorColor: Color(0xff4361EE),
+                    cursorColor: const Color(0xff4361EE),
                     controller: descriptionController,
                     decoration: const InputDecoration(
                       hintText: 'Your note content here...',

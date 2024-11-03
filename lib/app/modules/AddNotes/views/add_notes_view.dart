@@ -37,12 +37,12 @@ class AddNotesView extends GetView<AddNotesController> {
               await controller.addTaskToFirebase();
               Get.offAll(() => const HomeView());
             },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xff4361EE),
+            ),
             child: Text(
               'Save',
               style: GoogleFonts.outfit(color: const Color(0xffffffff)),
-            ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xff4361EE),
             ),
           ),
           SizedBox(width: 10.w),
@@ -159,8 +159,8 @@ class AddNotesView extends GetView<AddNotesController> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showPromptBottomSheet(context, controller),
-        child: Icon(CupertinoIcons.sparkles, size: 26.r, color: Colors.white),
         backgroundColor: const Color(0xff4361EE),
+        child: Icon(CupertinoIcons.sparkles, size: 26.r, color: Colors.white),
       ),
     );
   }
@@ -168,85 +168,89 @@ class AddNotesView extends GetView<AddNotesController> {
   void _showPromptBottomSheet(
       BuildContext context, AddNotesController controller) {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       backgroundColor: const Color(0xff15161E),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
       ),
       builder: (BuildContext context) {
-        return Stack(
-          children: [
-            Padding(
-              padding: EdgeInsets.all(10.0.r),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child:
-                          Image.asset('assets/images/khush.png', scale: 1.6.r),
-                    ),
-                    SizedBox(height: 10.h),
-                    TextFieldContainer(
-                      controller: controller.promptController,
-                      hintText: 'Enter a prompt',
-                      suffixIcon: IconButton(
-                          icon: const Icon(Icons.send, color: Colors.white54),
-                          onPressed: () {
-                            controller.generateResponse(
-                                controller.promptController.text);
-                          }),
-                    ),
-                    SizedBox(height: 10.h),
-                    Obx(() {
-                      return _displayTextSection(
-                          controller, 'Asked:', controller.askedText.value);
-                    }),
-                    Obx(() {
-                      return controller.isLoading.value
-                          ? Center(
-                              child: CircularProgressIndicator(
-                              color: Color(0xff4361EE),
-                            ))
-                          : _displayTextSection(controller, 'Response:',
-                              controller.response.value);
-                    }),
-                    SizedBox(
-                      height: 60.h,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 10.h,
-              left: 20.w,
-              right: 20.w,
-              child: ElevatedButton(
-                onPressed: () {
-                  controller.titleController.text = controller.askedText.value;
-                  controller.descriptionController.text =
-                      controller.response.value;
-                  Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  fixedSize: Size(340.w, 45.h),
-                  backgroundColor: const Color(0xff4361EE),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.r),
+        return SizedBox(
+          height: 0.7.sh,
+          child: Stack(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(10.0.r),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child:
+                            Image.asset('assets/images/khush.png', scale: 1.6.r),
+                      ),
+                      SizedBox(height: 10.h),
+                      TextFieldContainer(
+                        controller: controller.promptController,
+                        hintText: 'Enter a prompt',
+                        suffixIcon: IconButton(
+                            icon: const Icon(Icons.send, color: Colors.white54),
+                            onPressed: () {
+                              controller.generateResponse(
+                                  controller.promptController.text);
+                            }),
+                      ),
+                      SizedBox(height: 10.h),
+                      Obx(() {
+                        return _displayTextSection(
+                            controller, 'Asked:', controller.askedText.value);
+                      }),
+                      Obx(() {
+                        return controller.isLoading.value
+                            ? const Center(
+                                child: CircularProgressIndicator(
+                                color: Color(0xff4361EE),
+                              ))
+                            : _displayTextSection(controller, 'Response:',
+                                controller.response.value);
+                      }),
+                      SizedBox(
+                        height: 60.h,
+                      ),
+                    ],
                   ),
                 ),
-                child: Text(
-                  'Insert into notes',
-                  style: GoogleFonts.outfit(
-                      fontSize: 16.sp,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w400),
+              ),
+              Positioned(
+                bottom: 10.h,
+                left: 20.w,
+                right: 20.w,
+                child: ElevatedButton(
+                  onPressed: () {
+                    controller.titleController.text = controller.askedText.value;
+                    controller.descriptionController.text =
+                        controller.response.value;
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: Size(340.w, 45.h),
+                    backgroundColor: const Color(0xff4361EE),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                  ),
+                  child: Text(
+                    'Insert into notes',
+                    style: GoogleFonts.outfit(
+                        fontSize: 16.sp,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );
@@ -284,11 +288,11 @@ class TextFieldContainer extends StatelessWidget {
   final Widget? suffixIcon;
 
   const TextFieldContainer({
-    Key? key,
+    super.key,
     required this.controller,
     required this.hintText,
     this.suffixIcon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -12,7 +12,7 @@ class CategoryButton extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onPressed;
 
-  const CategoryButton({
+  const CategoryButton({super.key, 
     required this.text,
     this.isSelected = false,
     required this.onPressed,
@@ -54,7 +54,7 @@ class Notescard extends StatelessWidget {
   final String docId;
   final List<String> tags;
 
-  const Notescard({
+  const Notescard({super.key, 
     required this.title,
     this.timestamp,
     required this.description,
@@ -99,7 +99,7 @@ class Notescard extends StatelessWidget {
               maxLines: 2,
               style: GoogleFonts.outfit(
                 color: Colors.white,
-                fontSize: 28.sp,
+                fontSize: 26.sp,
                 fontWeight: FontWeight.w500,
                 height: 1.h,
               ),
@@ -143,12 +143,12 @@ class NotescardView extends StatelessWidget {
   final String description;
   final String? timestamp;
   final String docId;
-  const NotescardView({
+  const NotescardView({super.key, 
     required this.title,
     required this.description,
     this.timestamp,
     required this.docId,
-  }) : super();
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -187,15 +187,15 @@ class NotescardView extends StatelessWidget {
                     description: description,
                   ));
             },
+            style: const ButtonStyle(
+              backgroundColor: WidgetStatePropertyAll(
+                Color(0xff4361EE),
+              ),
+            ),
             child: Text(
               'Edit',
               style: GoogleFonts.outfit(
                 color: const Color(0xffffffff),
-              ),
-            ),
-            style: const ButtonStyle(
-              backgroundColor: WidgetStatePropertyAll(
-                Color(0xff4361EE),
               ),
             ),
           ),
@@ -233,19 +233,19 @@ class NotescardView extends StatelessWidget {
                       title,
                       style: GoogleFonts.outfit(
                         color: Colors.white,
-                        fontSize: 40.sp,
+                        fontSize: 36.sp,
                         fontWeight: FontWeight.w400,
                         height: 1.h,
                       ),
                     ),
                     SizedBox(
-                      height: 5.h,
+                      height: 10.h,
                     ),
                     Text(
                       description,
                       style: GoogleFonts.outfit(
                         color: Colors.white54,
-                        fontSize: 16.sp,
+                        fontSize: 15.sp,
                         fontWeight: FontWeight.w500,
                       ),
                     ),

@@ -21,7 +21,7 @@ class ProfileView extends GetView<ProfileController> {
           'Profile',
           style: GoogleFonts.outfit(
             color: const Color(0xffFFFFFF),
-            fontSize: 20,
+            fontSize: 20.sp,
           ),
         ),
         actions: [
@@ -44,7 +44,7 @@ class ProfileView extends GetView<ProfileController> {
                 style: GoogleFonts.outfit(
                   color: const Color(0xffFFFFFF),
                   fontWeight: FontWeight.w500,
-                  fontSize: 16,
+                  fontSize: 14.sp,
                 ),
               ),
             ),
@@ -53,11 +53,11 @@ class ProfileView extends GetView<ProfileController> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0.r),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 15),
+              SizedBox(height: 15.h),
               Obx(() {
                 return CircleAvatar(
                   foregroundImage: controller.user.value?.photoURL != null
@@ -67,7 +67,7 @@ class ProfileView extends GetView<ProfileController> {
                   backgroundColor: const Color(0xff1F2028),
                 );
               }),
-              const SizedBox(height: 10),
+              SizedBox(height: 10.h),
               Obx(() {
                 String displayName =
                     controller.user.value?.displayName ?? 'Guest';
@@ -78,34 +78,34 @@ class ProfileView extends GetView<ProfileController> {
                 return Text(
                   formattedName,
                   style: GoogleFonts.outfit(
-                    fontSize: 32.sp,
+                    fontSize: 30.sp,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
                   ),
                   textAlign: TextAlign.center,
                 );
               }),
-              const SizedBox(height: 8),
+              SizedBox(height: 8.h),
               Text(
                 'YOUR EMAIL:',
                 style: GoogleFonts.outfit(
                   color: const Color(0xff4361EE),
-                  fontSize: 12,
+                  fontSize: 12.sp,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(height: 5),
+              SizedBox(height: 5.h),
               Obx(() {
                 return Text(
-                  "${controller.user.value?.email ?? 'No Email'}",
+                  controller.user.value?.email ?? 'No Email',
                   style: GoogleFonts.outfit(
                     color: const Color(0xff8F8F93),
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
                   ),
                 );
               }),
-              const SizedBox(height: 10),
+              SizedBox(height: 10.h),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -117,23 +117,23 @@ class ProfileView extends GetView<ProfileController> {
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: 10.h),
               buildListItem('Achieve Notes'),
               buildListItem('Achieve Notes'),
               buildListItem('Achieve Notes'),
-              const SizedBox(height: 20),
+              SizedBox(height: 20.h),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'SETTINGS',
                   style: GoogleFonts.outfit(
                     color: const Color(0xff4361EE),
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: 10.h),
               buildListItem('Achieve Notes'),
               buildListItem('Achieve Notes'),
               buildListItem('Achieve Notes'),
@@ -149,10 +149,10 @@ class ProfileView extends GetView<ProfileController> {
       color: const Color(0xFF1E1F28),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: ListTile(
-        leading: const Icon(
+        leading: Icon(
           Icons.save,
-          color: Color(0xff4361EE),
-          size: 24,
+          color: const Color(0xff4361EE),
+          size: 24.r,
         ),
         title: Text(
           title,

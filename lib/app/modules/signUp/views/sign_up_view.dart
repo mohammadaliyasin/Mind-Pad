@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mind_pad/app/modules/home/views/home_view.dart';
-import 'package:mind_pad/app/modules/profile/views/profile_view.dart';
-import 'package:mind_pad/app/services/services/auth/authServices.dart';
 import '../controllers/sign_up_controller.dart';
 
 class SignUpView extends GetView<SignUpController> {
@@ -69,7 +66,7 @@ class SignUpView extends GetView<SignUpController> {
                             color: const Color(0xFF4361EE),
                             fontSize: 30.sp,
                             fontWeight: FontWeight.w500,
-                            height: 0.1.h,
+                            height: 0.7.h,
                           ),
                         ),
                         TextSpan(
@@ -78,7 +75,7 @@ class SignUpView extends GetView<SignUpController> {
                             color: Colors.white,
                             fontSize: 30.sp,
                             fontWeight: FontWeight.w500,
-                            height: 1.h,
+                            height: 0.7.h,
                           ),
                         ),
                       ],

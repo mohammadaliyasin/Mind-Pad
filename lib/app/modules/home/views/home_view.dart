@@ -248,12 +248,12 @@ class HomeView extends GetView<HomeController> {
         onPressed: () {
           Get.to(() => const AddNotesView());
         },
+        backgroundColor: const Color(0xff4361EE),
         child: Icon(
           Icons.edit,
           size: 30.r,
           color: const Color(0xffffffff),
         ),
-        backgroundColor: const Color(0xff4361EE),
       ),
     );
   }

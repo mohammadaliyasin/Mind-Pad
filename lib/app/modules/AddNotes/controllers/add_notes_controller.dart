@@ -19,11 +19,6 @@ class AddNotesController extends GetxController {
   var isLoading = false.obs;
   var askedText = ''.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    // generateResponse(promptController.text);
-  }
 
   Future<void> addTaskToFirebase() async {
     FirebaseAuth auth = FirebaseAuth.instance;
