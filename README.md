@@ -1,8 +1,8 @@
 # MindPad - Minor Project Design
 
-This repository contains the code for **MindPad**, a note-taking application. The design for this project was created in Figma. You can interact with a live preview of the design below.
+This repository contains the code for **MindPad**, a note-taking application. The design for this project was created in Figma.
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/Du4c2Eh8MxTCLcSqvV6rTX/Minor-Project?node-id=0-1&embed-host=share" allowfullscreen></iframe>
+![Figma Design Preview](assets/images/fgDesign.png)
 
 ---
 
